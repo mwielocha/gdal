@@ -435,6 +435,10 @@ impl Dataset {
         unsafe { SpatialRef::from_c_obj(gdal_sys::GDALGetSpatialRef(self.c_dataset)) }
     }
 
+    pub fn gcps_spatial_ref(&self) -> Result<SpatialRef> {
+        unsafe { SpatialRef::from_c_obj(gdal_sys::GDALGetGCPSpatialRef(self.c_dataset)) }
+    }
+
     #[cfg(major_ge_3)]
     /// Set the spatial reference system for this dataset.
     pub fn set_spatial_ref(&mut self, spatial_ref: &SpatialRef) -> Result<()> {

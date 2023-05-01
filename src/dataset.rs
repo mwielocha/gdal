@@ -435,8 +435,20 @@ impl Dataset {
         unsafe { SpatialRef::from_c_obj(gdal_sys::GDALGetSpatialRef(self.c_dataset)) }
     }
 
-    pub fn gcps_spatial_ref(&self) -> Result<SpatialRef> {
+    /// Set the spatial reference system for ground control points of this dataset.
+    pub fn gcp_spatial_ref(&self) -> Result<SpatialRef> {
         unsafe { SpatialRef::from_c_obj(gdal_sys::GDALGetGCPSpatialRef(self.c_dataset)) }
+    }
+
+    /// Fetch the projection definition string for ground control points of this dataset.
+    pub fn gcp_projection(&self) -> String {
+        let rv = unsafe { gdal_sys::GDALGetGCPProjection(self.c_dataset) };
+        _string(rv)
+    }
+
+    /// Fetch the ground control points count of this dataset.
+    pub fn gcp_count(&self) -> isize {
+        (unsafe { gdal_sys::GDALGetGCPCount(self.c_dataset) }) as isize
     }
 
     #[cfg(major_ge_3)]
